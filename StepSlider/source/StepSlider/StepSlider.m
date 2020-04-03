@@ -234,7 +234,12 @@ void withoutCAAnimation(withoutAnimationBlock code)
         animationTimeDiff = (left ? [CATransaction animationDuration] : -[CATransaction animationDuration]) / indexDiff;   
     }
     NSTimeInterval animationTime = left ? animationTimeDiff : [CATransaction animationDuration] + animationTimeDiff;
-    CGFloat circleAnimation      = circleFrameSide / _trackLayer.frame.size.width;
+
+    CGFloat circleAnimation;
+    if (0 == _trackLayer.bounds.size.width) {
+        circleAnimation = 0.0f;
+    }
+    circleAnimation = circleFrameSide / _trackLayer.frame.size.width;
     
     for (NSUInteger i = 0; i < self.maxCount; i++) {
         CAShapeLayer *trackCircle;
@@ -410,6 +415,9 @@ void withoutCAAnimation(withoutAnimationBlock code)
 
 - (CGFloat)indexCalculate
 {
+    if (1 >= self.maxCount || 0 == _trackLayer.bounds.size.width) {
+        return 0.0f;
+    }
     return self.sliderPosition / (_trackLayer.bounds.size.width / (self.maxCount - 1));
 }
 
@@ -501,7 +509,11 @@ void withoutCAAnimation(withoutAnimationBlock code)
         self->_sliderCircleLayer.position = CGPointMake(limitedPosition, self->_sliderCircleLayer.position.y);
         self->_trackLayer.path = [self fillingPath];
         
-        NSUInteger index = (self.sliderPosition + self->diff) / (self->_trackLayer.bounds.size.width / (self.maxCount - 1));
+        NSUInteger index;
+        if (1 >= self.maxCount || 0 == self->_trackLayer.bounds.size.width) {
+            index = 0;
+        }
+        index = (self.sliderPosition + self->diff) / (self->_trackLayer.bounds.size.width / (self.maxCount - 1));
         if (self->_index != index) {
             for (CAShapeLayer *trackCircle in self->_trackCirclesArray) {
                 CGImageRef trackCircleImage = [self trackCircleImage:trackCircle];
