@@ -28,6 +28,8 @@ typedef NS_ENUM(NSUInteger, StepSliderTextOrientation) {
     StepSliderTextOrientationUp,
 };
 
+@protocol StepSliderDelegate;
+
 IB_DESIGNABLE
 
 @interface StepSlider : UIControl
@@ -119,6 +121,7 @@ IB_DESIGNABLE
  */
 @property (nonatomic) IBInspectable BOOL enableHapticFeedback;
 
+@property (nonatomic, weak) id <StepSliderDelegate> delegate;
 
 /**
  *  Set the `index` property to parameter value.
@@ -137,5 +140,15 @@ IB_DESIGNABLE
  *  @param state The state that uses the specified image.
  */
 - (void)setTrackCircleImage:(UIImage *)image forState:(UIControlState)state;
+
+@end
+
+
+@protocol StepSliderDelegate <NSObject>
+
+/// Delegate method called at the completion of user input events. Unlike the UIControlEventValueChanged which is triggered both during and at the end of a user interaction, this delegate call is only triggered when the user touch interaction has completed. This allows allows a delegate to perform additional updates or processes only at the end of the interaction rather than at multiple points during the interaction.
+/// @param stepSlider The StepSlider object.
+/// @param index The final index value for the stepSlider object.
+- (void)stepSlider:(StepSlider *)stepSlider wasUpdatedToIndex:(NSUInteger)index;
 
 @end

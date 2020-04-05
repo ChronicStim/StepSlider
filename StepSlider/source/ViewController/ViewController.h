@@ -10,6 +10,7 @@
 #import <StepSlider/StepSlider.h>
 
 @interface ViewController : UIViewController
+< StepSliderDelegate >
 
 @property (nonatomic, strong) IBOutlet StepSlider *sliderView;
 @property (nonatomic, strong) IBOutlet UILabel *label;

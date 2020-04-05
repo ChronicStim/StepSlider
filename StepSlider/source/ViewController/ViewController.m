@@ -13,6 +13,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.sliderView.delegate = self;
 
     [self.label setText:[NSString stringWithFormat:@"Selected index: %lu", (unsigned long)self.sliderView.index]];
 }
@@ -343,6 +345,13 @@
 {
     sender.selected = !sender.selected;
     self.sliderView.enableHapticFeedback = sender.selected;
+}
+
+#pragma mark - StepSliderDelegate
+
+- (void)stepSlider:(StepSlider *)stepSlider wasUpdatedToIndex:(NSUInteger)index;
+{
+    NSLog(@"StepSlider was updated to Index %li. %@",(long)index,stepSlider);
 }
 
 @end

@@ -492,6 +492,8 @@ void withoutCAAnimation(withoutAnimationBlock code)
                 }
                 animateLayouts = YES;
                 [self setNeedsLayout];
+
+                [self stepSliderWasUpdated];
                 return NO;
             }
         }
@@ -556,6 +558,15 @@ void withoutCAAnimation(withoutAnimationBlock code)
     animateLayouts = YES;
     [self setNeedsLayout];
     _selectFeedback = nil;
+    
+    [self stepSliderWasUpdated];
+}
+
+-(void)stepSliderWasUpdated;
+{
+    if (nil != self.delegate && [(NSObject *)self.delegate respondsToSelector:@selector(stepSlider:wasUpdatedToIndex:)]) {
+        [self.delegate stepSlider:self wasUpdatedToIndex:self.index];
+    }
 }
 
 #pragma mark - Texts
